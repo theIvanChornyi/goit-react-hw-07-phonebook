@@ -6,9 +6,9 @@ import { Formik, Form } from 'formik';
 import { ToastContainer, toast } from 'react-toastify';
 
 import { schema } from './validationSchema';
-import { FormInput } from './FormInput';
+import { FormInput, FormLabel } from './FormInput';
 import { Box } from 'components/Box';
-import { AddBtn } from './PhonebookForm.styled';
+import { AddBtn, FavBox } from './PhonebookForm.styled';
 import { addContact } from 'redux/contacts/contactsOperatons';
 
 export const PhonebookForm = () => {
@@ -24,7 +24,7 @@ export const PhonebookForm = () => {
     return isIncludes;
   };
 
-  const handleSubmit = ({ name, number }, { resetForm }) => {
+  const handleSubmit = ({ name, number, favorite }, { resetForm }) => {
     if (checkUniqContactName(name)) {
       toast.error(`${name} is already in contacts`, {
         autoClose: false,
@@ -34,17 +34,17 @@ export const PhonebookForm = () => {
       const newContact = {
         name: name.trim(),
         phone: number.trim(),
-        favorite: false,
+        favorite,
       };
-      dispatch(addContact(newContact));
       toast.dismiss();
+      dispatch(addContact(newContact));
     }
   };
 
   return (
     <>
       <Formik
-        initialValues={{ name: '', number: '' }}
+        initialValues={{ name: '', number: '', favorite: false }}
         onSubmit={handleSubmit}
         validationSchema={schema}
         validateOnBlur={true}
@@ -52,36 +52,30 @@ export const PhonebookForm = () => {
         validateOnMount={false}
       >
         {({ errors, touched, isValidating, values }) => {
-          if (
-            !isValidating &&
-            touched.name &&
-            !toast.isActive(toastName.current) &&
-            values.name !== ''
-          ) {
-            toastName.current = toast.warn(errors?.name, {
-              autoClose: false,
-            });
-          } else if (!errors?.name) {
-            toast.dismiss(toastName.current);
-          }
-
-          if (
-            !isValidating &&
-            touched.number &&
-            !toast.isActive(toastNumber.current) &&
-            values.number !== ''
-          ) {
-            toastNumber.current = toast.warn(errors?.number, {
-              autoClose: false,
-            });
-          } else if (!errors?.number) {
-            toast.dismiss(toastNumber.current);
-          }
+          toastsLogic(
+            errors,
+            touched,
+            isValidating,
+            values,
+            toastName,
+            toastNumber
+          );
 
           return (
             <Box autoComplete="off" pt={2} position="relative" as={Form}>
               <FormInput inputType="text" formName="name" />
               <FormInput inputType="tel" formName="number" />
+              <Box
+                htmlFor={'favorite'}
+                display="flex"
+                alignItems="baseline"
+                justifyContent="center"
+                mb={4}
+                as="label"
+              >
+                <FormLabel>Add to favorite</FormLabel>
+                <FavBox type="checkbox" name="favorite" id={'favorite'} />
+              </Box>
               <AddBtn type="submit">Add contact</AddBtn>
             </Box>
           );
@@ -91,3 +85,38 @@ export const PhonebookForm = () => {
     </>
   );
 };
+
+function toastsLogic(
+  errors,
+  touched,
+  isValidating,
+  values,
+  toastName,
+  toastNumber
+) {
+  if (
+    !isValidating &&
+    touched.name &&
+    !toast.isActive(toastName.current) &&
+    values.name !== ''
+  ) {
+    toastName.current = toast.warn(errors?.name, {
+      autoClose: false,
+    });
+  } else if (!errors?.name) {
+    toast.dismiss(toastName.current);
+  }
+
+  if (
+    !isValidating &&
+    touched.number &&
+    !toast.isActive(toastNumber.current) &&
+    values.number !== ''
+  ) {
+    toastNumber.current = toast.warn(errors?.number, {
+      autoClose: false,
+    });
+  } else if (!errors?.number) {
+    toast.dismiss(toastNumber.current);
+  }
+}

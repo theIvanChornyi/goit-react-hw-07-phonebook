@@ -1,3 +1,4 @@
+import { Field } from 'formik';
 import styled from 'styled-components';
 export const AddBtn = styled.button`
   display: block;
@@ -18,4 +19,7 @@ export const AddBtn = styled.button`
     background-color: ${p => p.theme.colors.accent};
     cursor: pointer;
   }
+`;
+export const FavBox = styled(Field)`
+  margin-left: 10px;
 `;
