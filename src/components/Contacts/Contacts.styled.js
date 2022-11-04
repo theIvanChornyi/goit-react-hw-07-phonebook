@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 export const ContactItem = styled.li`
+  position: relative;
   display: flex;
   gap: ${p => p.theme.space[3]}px;
   align-items: center;
@@ -16,12 +17,26 @@ export const ContactItem = styled.li`
   background-color: rgba(255, 255, 255, 0.4);
   border-radius: ${p => p.theme.radii.normal};
   transition: background-color linear 200ms;
+  overflow: hidden;
 
   :not(:last-child) {
     margin-bottom: ${p => p.theme.space[3]}px;
   }
   :hover {
     background-color: ${p => p.theme.colors.muted};
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 60px;
+    height: 40px;
+    background-color: gold;
+    display: ${p => (p.favorite ? 'block' : 'none')};
+
+    transform: rotate(45deg) translate(-90%);
   }
 `;
 

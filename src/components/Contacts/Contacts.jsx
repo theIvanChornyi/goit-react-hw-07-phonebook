@@ -23,7 +23,7 @@ export const Contacts = () => {
   return (
     <ul>
       {arr.map(({ id, name, phone, favorite }) => (
-        <ContactItem key={id}>
+        <ContactItem favorite={favorite} key={id}>
           <div>
             <span>{name}: </span>
             <span>{phone}</span>
@@ -47,6 +47,7 @@ export const Contacts = () => {
 
             <ItemButton
               type="button"
+              color={'tomato'}
               data-id={id}
               onClick={handleDeleteContact}
             >
