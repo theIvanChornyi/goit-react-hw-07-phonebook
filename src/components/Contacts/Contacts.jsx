@@ -10,7 +10,6 @@ import { fetchContacts, deleteContact, toogleFavorite } from 'redux/contacts';
 
 export const Contacts = () => {
   const dispatch = useDispatch();
-
   const arr = useSelector(state => getFiltredUsers(state));
 
   useEffect(() => {

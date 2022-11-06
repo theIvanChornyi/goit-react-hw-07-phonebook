@@ -15,8 +15,8 @@ export const PhonebookForm = () => {
   const contacts = useSelector(state => getAllContacts(state));
   const toastName = useRef(null);
   const toastNumber = useRef(null);
-  const dispatch = useDispatch();
 
+  const dispatch = useDispatch();
   const checkUniqContactName = name => {
     const isIncludes = contacts.find(
       contact => contact.name.toLowerCase() === name.toLowerCase()
@@ -103,7 +103,7 @@ function toastsLogic(
     toastName.current = toast.warn(errors?.name, {
       autoClose: false,
     });
-  } else if (!errors?.name) {
+  } else if (!errors?.name && toastName.current) {
     toast.dismiss(toastName.current);
   }
 
@@ -116,7 +116,7 @@ function toastsLogic(
     toastNumber.current = toast.warn(errors?.number, {
       autoClose: false,
     });
-  } else if (!errors?.number) {
+  } else if (!errors?.number && toastNumber.current) {
     toast.dismiss(toastNumber.current);
   }
 }
