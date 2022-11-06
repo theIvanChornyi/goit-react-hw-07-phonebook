@@ -15,7 +15,7 @@ export const App = () => {
     ? (document.body.style.cursor = 'wait')
     : (document.body.style.cursor = 'auto');
 
-  !isLoading && toast.error(error, { autoClose: 5000 });
+  !error && toast.error(error, { autoClose: 5000 });
 
   return (
     <Box as="main">
